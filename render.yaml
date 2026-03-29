@@ -1,0 +1,158 @@
+services:
+  - type: web
+    runtime: docker
+    name: medoc-api
+    plan: starter
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: API_PREFIX
+        value: /api
+      - key: LOG_LEVEL
+        value: INFO
+      - key: SCHEDULER_ENABLED
+        value: "false"
+      - key: SCHEDULER_TIMEZONE
+        value: Africa/Tunis
+      - key: REPO_OWNER
+        value: ballouchi
+      - key: REPO_NAME
+        value: medoc
+      - key: TARGET_BRANCH
+        value: gh-pages
+      - key: TARGET_REF
+        value: refs/heads/gh-pages
+      - key: HTTP_USER_AGENT
+        value: medoc-fastapi-api/0.3 (+contact: your-email@example.com)
+      - key: AUTO_DOWNLOAD_OFFICIAL_FILES
+        value: "true"
+      - key: AUTO_INGEST_SUPPORTED_OFFICIAL_FILES
+        value: "true"
+      - key: ARTIFACT_STORAGE_BACKEND
+        value: supabase
+      - key: SUPABASE_STORAGE_BUCKET
+        value: medoc-artifacts
+      - key: SUPABASE_STORAGE_PATH_PREFIX
+        value: artifacts
+      - key: SUPABASE_STORAGE_CREATE_BUCKET_IF_MISSING
+        value: "false"
+      - key: SUPABASE_STORAGE_PUBLIC
+        value: "false"
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_API_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_WEBHOOK_SECRET
+        sync: false
+      - key: SUPABASE_STORAGE_URL
+        sync: false
+      - key: SUPABASE_STORAGE_KEY
+        sync: false
+
+  - type: cron
+    runtime: docker
+    name: medoc-repo-reconcile
+    plan: starter
+    schedule: '15 6 * * *'
+    dockerCommand: python -m app.scripts.run_job reconcile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: API_PREFIX
+        value: /api
+      - key: LOG_LEVEL
+        value: INFO
+      - key: SCHEDULER_ENABLED
+        value: "false"
+      - key: SCHEDULER_TIMEZONE
+        value: Africa/Tunis
+      - key: REPO_OWNER
+        value: ballouchi
+      - key: REPO_NAME
+        value: medoc
+      - key: TARGET_BRANCH
+        value: gh-pages
+      - key: TARGET_REF
+        value: refs/heads/gh-pages
+      - key: HTTP_USER_AGENT
+        value: medoc-fastapi-api/0.3 (+contact: your-email@example.com)
+      - key: AUTO_DOWNLOAD_OFFICIAL_FILES
+        value: "true"
+      - key: AUTO_INGEST_SUPPORTED_OFFICIAL_FILES
+        value: "true"
+      - key: ARTIFACT_STORAGE_BACKEND
+        value: supabase
+      - key: SUPABASE_STORAGE_BUCKET
+        value: medoc-artifacts
+      - key: SUPABASE_STORAGE_PATH_PREFIX
+        value: artifacts
+      - key: SUPABASE_STORAGE_CREATE_BUCKET_IF_MISSING
+        value: "false"
+      - key: SUPABASE_STORAGE_PUBLIC
+        value: "false"
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_API_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: SUPABASE_STORAGE_URL
+        sync: false
+      - key: SUPABASE_STORAGE_KEY
+        sync: false
+
+  - type: cron
+    runtime: docker
+    name: medoc-source-checks
+    plan: starter
+    schedule: '45 6 * * *'
+    dockerCommand: python -m app.scripts.run_job source-checks
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: API_PREFIX
+        value: /api
+      - key: LOG_LEVEL
+        value: INFO
+      - key: SCHEDULER_ENABLED
+        value: "false"
+      - key: SCHEDULER_TIMEZONE
+        value: Africa/Tunis
+      - key: REPO_OWNER
+        value: ballouchi
+      - key: REPO_NAME
+        value: medoc
+      - key: TARGET_BRANCH
+        value: gh-pages
+      - key: TARGET_REF
+        value: refs/heads/gh-pages
+      - key: HTTP_USER_AGENT
+        value: medoc-fastapi-api/0.3 (+contact: your-email@example.com)
+      - key: AUTO_DOWNLOAD_OFFICIAL_FILES
+        value: "true"
+      - key: AUTO_INGEST_SUPPORTED_OFFICIAL_FILES
+        value: "true"
+      - key: ARTIFACT_STORAGE_BACKEND
+        value: supabase
+      - key: SUPABASE_STORAGE_BUCKET
+        value: medoc-artifacts
+      - key: SUPABASE_STORAGE_PATH_PREFIX
+        value: artifacts
+      - key: SUPABASE_STORAGE_CREATE_BUCKET_IF_MISSING
+        value: "false"
+      - key: SUPABASE_STORAGE_PUBLIC
+        value: "false"
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_API_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: SUPABASE_STORAGE_URL
+        sync: false
+      - key: SUPABASE_STORAGE_KEY
+        sync: false
